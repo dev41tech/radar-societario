@@ -17,7 +17,7 @@ app.use(express.json());
 app.use('/api', routes);
 
 if (process.env.NODE_ENV === 'production') {
-  const staticPath = path.join(__dirname, '../../frontend/dist');
+  const staticPath = path.join(__dirname, '../src/frontend/dist');
   app.use(express.static(staticPath));
   app.get('*', (_, res) => res.sendFile(path.join(staticPath, 'index.html')));
 }
