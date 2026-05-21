@@ -1,0 +1,130 @@
+import pool from '../db/connection';
+import { CompanyLicense, LicenseType } from '../types';
+import { getLicenseStatus } from '../utils/licenseStatus';
+
+export async function getLicensesForCompany(companyId: string): Promise<CompanyLicense[]> {
+  const [rows] = await pool.query(
+    'SELECT * FROM rs_company_licenses WHERE company_id = ? ORDER BY created_at ASC',
+    [companyId]
+  ) as any;
+
+  return rows.map((row: any) => {
+    const { status, daysUntil } = getLicenseStatus(row.expiration_date, row.applicable);
+    return { ...row, status, days_until_expiration: daysUntil };
+  });
+}
+
+export async function upsertAllLicenses(
+  companyId: string,
+  licenses: Array<{
+    license_type: LicenseType;
+    expiration_date: string | null;
+    expiration_date_text: string | null;
+    notes: string | null;
+    applicable: boolean;
+  }>
+): Promise<void> {
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    // Replace all licenses for this company
+    await conn.query('DELETE FROM rs_company_licenses WHERE company_id = ?', [companyId]);
+    for (const l of licenses) {
+      await conn.query(
+        `INSERT INTO rs_company_licenses
+         (company_id, license_type, expiration_date, expiration_date_text, notes, applicable)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [companyId, l.license_type, l.expiration_date || null, l.expiration_date_text || null, l.notes || null, l.applicable]
+      );
+    }
+    await conn.commit();
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function getExpiringLicenses(daysBefore: number): Promise<Array<{
+  company_id: string;
+  razao_social: string;
+  cnpj: string | null;
+  license_type: LicenseType;
+  expiration_date: string;
+  days_until: number;
+}>> {
+  const today      = new Date().toISOString().split('T')[0];
+  const targetDate = new Date(Date.now() + daysBefore * 86400000).toISOString().split('T')[0];
+  const [rows] = await pool.query(
+    `SELECT l.company_id, c.razao_social, c.cnpj, l.license_type, l.expiration_date,
+            DATEDIFF(l.expiration_date, CURDATE()) as days_until
+     FROM rs_company_licenses l
+     JOIN rs_companies c ON c.id = l.company_id
+     WHERE c.active = TRUE AND l.applicable = TRUE
+       AND l.expiration_date IS NOT NULL
+       AND l.expiration_date BETWEEN ? AND ?
+     ORDER BY l.expiration_date ASC`,
+    [today, targetDate]
+  ) as any;
+  return rows;
+}
+
+export async function checkNotificationSent(
+  companyId: string, licenseType: string, daysBefore: number, expirationDate: string
+): Promise<boolean> {
+  const [rows] = await pool.query(
+    'SELECT id FROM rs_notification_log WHERE company_id=? AND license_type=? AND days_before=? AND expiration_date=?',
+    [companyId, licenseType, daysBefore, expirationDate]
+  ) as any;
+  return rows.length > 0;
+}
+
+export async function logNotification(
+  companyId: string, licenseType: string, daysBefore: number, expirationDate: string
+): Promise<void> {
+  await pool.query(
+    'INSERT IGNORE INTO rs_notification_log (company_id, license_type, days_before, expiration_date) VALUES (?,?,?,?)',
+    [companyId, licenseType, daysBefore, expirationDate]
+  );
+}
+
+export async function checkTrelloCardExists(
+  companyId: string, licenseType: string, expirationDate: string
+): Promise<boolean> {
+  const [rows] = await pool.query(
+    'SELECT id FROM rs_trello_cards WHERE company_id=? AND license_type=? AND expiration_date=?',
+    [companyId, licenseType, expirationDate]
+  ) as any;
+  return rows.length > 0;
+}
+
+export async function logTrelloCard(
+  companyId: string, licenseType: string, expirationDate: string, cardId: string
+): Promise<void> {
+  await pool.query(
+    'INSERT IGNORE INTO rs_trello_cards (company_id, license_type, expiration_date, card_id) VALUES (?,?,?,?)',
+    [companyId, licenseType, expirationDate, cardId]
+  );
+}
+
+export async function getUpcomingExpirations(limit = 10): Promise<Array<{
+  company_id: string;
+  razao_social: string;
+  license_type: LicenseType;
+  expiration_date: string;
+  days_until: number;
+}>> {
+  const today = new Date().toISOString().split('T')[0];
+  const [rows] = await pool.query(
+    `SELECT l.company_id, c.razao_social, l.license_type, l.expiration_date,
+            DATEDIFF(l.expiration_date, CURDATE()) as days_until
+     FROM rs_company_licenses l
+     JOIN rs_companies c ON c.id = l.company_id
+     WHERE c.active = TRUE AND l.applicable = TRUE
+       AND l.expiration_date IS NOT NULL AND l.expiration_date >= ?
+     ORDER BY l.expiration_date ASC LIMIT ?`,
+    [today, limit]
+  ) as any;
+  return rows;
+}

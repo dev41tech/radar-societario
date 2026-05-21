@@ -1,0 +1,70 @@
+[2026-05-20 17:20:49] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:20:49] INFO: Agendador de notificações iniciado
+[2026-05-20 17:23:41] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:23:41] INFO: Agendador de notificações iniciado
+[2026-05-20 17:23:51] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:23:51] INFO: Agendador de notificações iniciado
+[2026-05-20 17:24:03] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:24:03] INFO: Agendador de notificações iniciado
+[2026-05-20 17:24:03] INFO: Agendador configurado: 0 8 * * *
+[2026-05-20 17:24:33] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:25:08] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:25:39] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:33:16] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:33:26] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:33:42] ERROR: Erro no sync: Unknown column 'status' in 'where clause'
+[2026-05-20 17:34:27] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-20 17:34:30] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:34:30] INFO: Agendador de notificações iniciado
+[2026-05-20 17:34:30] INFO: Agendador configurado: 0 8 * * *
+[2026-05-20 17:35:45] INFO: Radar Societário rodando na porta 3002
+[2026-05-20 17:35:45] INFO: Agendador de notificações iniciado
+[2026-05-20 17:35:45] INFO: Agendador configurado: 0 8 * * *
+[2026-05-20 17:36:00] INFO: Sync concluído: 421 empresas sincronizadas do Aditiva Pronto
+[2026-05-21 08:00:00] INFO: Iniciando job de notificações agendado...
+[2026-05-21 08:00:00] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 09:09:39] INFO: Sync concluído: 428 empresas sincronizadas do Aditiva Pronto
+[2026-05-21 11:50:02] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 11:50:02] INFO: Agendador de notificações iniciado
+[2026-05-21 11:50:02] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 11:51:00] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:30:05] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:30:05] INFO: Agendador de notificações iniciado
+[2026-05-21 14:30:05] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:30:27] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:30:27] INFO: Agendador de notificações iniciado
+[2026-05-21 14:30:27] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:30:56] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:30:56] INFO: Agendador de notificações iniciado
+[2026-05-21 14:30:56] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:31:06] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:31:06] INFO: Agendador de notificações iniciado
+[2026-05-21 14:31:06] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:31:20] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:31:20] INFO: Agendador de notificações iniciado
+[2026-05-21 14:31:20] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:31:27] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:31:27] INFO: Agendador de notificações iniciado
+[2026-05-21 14:31:27] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:31:28] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:31:28] INFO: Agendador de notificações iniciado
+[2026-05-21 14:31:28] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:45:33] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:45:33] INFO: Agendador de notificações iniciado
+[2026-05-21 14:45:33] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:45:52] INFO: Sync concluído: 428 empresas sincronizadas do Aditiva Pronto
+[2026-05-21 14:53:35] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:53:35] INFO: Agendador de notificações iniciado
+[2026-05-21 14:53:35] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:53:44] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:53:44] INFO: Agendador de notificações iniciado
+[2026-05-21 14:53:44] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:53:49] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:53:49] INFO: Agendador de notificações iniciado
+[2026-05-21 14:53:49] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:58:09] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 14:58:09] INFO: Agendador de notificações iniciado
+[2026-05-21 14:58:09] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 14:58:19] INFO: [location-import] colunas — CNPJ:38 Município:20 UF:22
+[2026-05-21 14:58:25] INFO: [location-import] Relacao_Empresas_21052026.xlsx — atualizado:427 nãoEncontrado:6 pulado:1
+[2026-05-21 14:58:38] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
