@@ -33,7 +33,22 @@ export async function testEmail(req: Request, res: Response): Promise<void> {
     await sendTestEmail(to);
     res.json({ ok: true, message: 'E-mail de teste enviado com sucesso' });
   } catch (e: any) {
-    res.status(500).json({ error: e.message });
+    console.error('SMTP_TEST_ERROR', {
+      message: e?.message,
+      code: e?.code,
+      command: e?.command,
+      response: e?.response,
+      responseCode: e?.responseCode,
+      stack: e?.stack,
+    });
+
+    res.status(500).json({
+      error: e?.message,
+      code: e?.code,
+      command: e?.command,
+      response: e?.response,
+      responseCode: e?.responseCode,
+    });
   }
 }
 

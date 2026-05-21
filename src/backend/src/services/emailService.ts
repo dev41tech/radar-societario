@@ -14,11 +14,48 @@ function formatDate(dateStr: string): string {
 
 export async function createTransporter() {
   const s = await getAllSettings();
+
+  const port = Number(s.smtp_port) || 587;
+
+  const smtpSecurity = String(s.smtp_secure || '')
+    .trim()
+    .toLowerCase();
+
+  const secure =
+    port === 465 || 
+    smtpSecurity === 'ssl/tls' ||
+    smtpSecurity === 'ssl' ||
+    smtpSecurity === 'tls' ||
+    smtpSecurity === 'true';
+
+  const requireTLS =
+    port === 587 || 
+    smtpSecurity === 'starttls';
+
+  if (!s.smtp_host) throw new Error('SMTP host não configurado');
+  if (!s.smtp_user) throw new Error('SMTP usuário não configurado');
+  if (!s.smtp_pass) throw new Error('SMTP senha não configurada');
+
+  logger.info('SMTP_CONFIG_DEBUG', {
+    host: s.smtp_host,
+    port,
+    secure,
+    requireTLS,
+    user: s.smtp_user,
+    from: s.smtp_from || s.smtp_user,
+    hasPassword: Boolean(s.smtp_pass),
+    smtpSecurityRaw: s.smtp_secure,
+  });
+
   return nodemailer.createTransport({
     host: s.smtp_host,
-    port: Number(s.smtp_port) || 587,
-    secure: s.smtp_secure === 'true',
-    auth: { user: s.smtp_user, pass: s.smtp_pass },
+    port,
+    secure,
+    requireTLS,
+    auth: {
+      user: s.smtp_user,
+      pass: s.smtp_pass,
+    },
   });
 }
 
