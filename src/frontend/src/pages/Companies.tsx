@@ -337,11 +337,11 @@ export default function Companies() {
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Razão Social</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">CNPJ</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Localização</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Origem</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ações</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">CNPJ</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Localização</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Origem</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700/60">
@@ -365,10 +365,10 @@ export default function Companies() {
                       {c.razao_social}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400 font-mono text-xs">{c.cnpj || '—'}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-center text-slate-500 dark:text-slate-400 font-mono text-xs">{c.cnpj || '—'}</td>
+                  <td className="px-4 py-3 text-center">
                     {c.cidade || c.uf ? (
-                      <span className="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+                      <span className="inline-flex items-center gap-1 text-slate-600 dark:text-slate-300">
                         <MapPin size={12} className="text-slate-400 flex-shrink-0" />
                         {[c.cidade, c.uf].filter(Boolean).join('/')}
                       </span>
@@ -376,7 +376,7 @@ export default function Companies() {
                       <span className="text-slate-300 dark:text-slate-600">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-center">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       c.source === 'manual'
                         ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'
@@ -385,7 +385,7 @@ export default function Companies() {
                       {c.source === 'manual' ? 'Manual' : 'Importada'}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-center">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       c.active
                         ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400'
@@ -394,7 +394,7 @@ export default function Companies() {
                       {c.active ? 'Ativa' : 'Inativa'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-center">
                     <Link
                       to={`/empresas/${c.id}`}
                       className="inline-flex p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
