@@ -1,13 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import {
-  Gauge, Buildings, Gear, Sun, Moon, Crosshair,
+  Gauge, Buildings, Gear, Sun, Moon, Crosshair, Bell,
 } from '@phosphor-icons/react';
 import { useTheme } from '../hooks/useTheme';
 
 const nav = [
-  { to: '/dashboard', icon: Gauge, label: 'Dashboard' },
-  { to: '/empresas', icon: Buildings, label: 'Empresas' },
-  { to: '/configuracoes', icon: Gear, label: 'Configurações' },
+  { to: '/dashboard',     icon: Gauge,     label: 'Dashboard' },
+  { to: '/empresas',      icon: Buildings, label: 'Empresas' },
+  { to: '/notificacoes',  icon: Bell,      label: 'Notificações' },
+  { to: '/configuracoes', icon: Gear,      label: 'Configurações' },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -15,12 +16,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <aside className="w-56 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col flex-shrink-0">
+      <aside className="w-56 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col flex-shrink-0 print:hidden">
         <div className="px-4 py-5 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2">
-          <Crosshair size={28} weight="fill" className="text-blue-600" />
+          <Crosshair size={28} weight="fill" className="text-blue-600 dark:text-blue-400" />
           <div>
             <p className="font-bold text-sm text-slate-900 dark:text-white leading-tight">Radar</p>
-            <p className="font-bold text-sm text-blue-600 leading-tight">Societário</p>
+            <p className="font-bold text-sm text-blue-600 dark:text-blue-400 leading-tight">Societário</p>
           </div>
         </div>
         <nav className="flex-1 px-2 py-4 flex flex-col gap-1">

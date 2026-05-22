@@ -1,9 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Buildings, Warning, Clock, CheckCircle, ArrowClockwise,
-  Bell, ArrowRight, CalendarCheck, TrendUp, MapPin, UploadSimple,
+  Bell, ArrowRight, CalendarCheck, TrendUp,
 } from '@phosphor-icons/react';
 import { dashboard, sync } from '../services/api';
 import { LICENSE_LABELS, LicenseType } from '../types';
@@ -11,7 +10,11 @@ import { useToast } from '../context/ToastContext';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 function formatDate(s: string) {
-  const [y, m, d] = s.split('-');
+  // Extrai apenas a parte da data (YYYY-MM-DD) para lidar com ISO strings
+  // do tipo "2026-06-21T03:00:00.000Z" que podem vir de colunas DATE do MySQL
+  const datePart = String(s).split('T')[0];
+  const [y, m, d] = datePart.split('-');
+  if (!y || !m || !d) return s;
   return `${d}/${m}/${y}`;
 }
 
@@ -53,24 +56,33 @@ const STATUS_LABEL: Record<string, string> = {
 
 // ─── StatCard ─────────────────────────────────────────────────────────────────
 function StatCard({
-  label, value, sub, icon: Icon, bg, border, text,
+  label, value, sub, icon: Icon, bg, border, text, to,
 }: {
   label: string; value: number; sub?: string;
-  icon: any; bg: string; border: string; text: string;
+  icon: any; bg: string; border: string; text: string; to?: string;
 }) {
-  return (
-    <div className={`relative overflow-hidden rounded-2xl border ${border} bg-white dark:bg-slate-800 p-5`}>
+  const baseCls = `relative overflow-hidden rounded-2xl border ${border} bg-white dark:bg-slate-800 p-5`;
+  const clickCls = to ? ' cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-150' : '';
+
+  const inner = (
+    <>
       <div className={`absolute -top-4 -right-4 w-20 h-20 rounded-full opacity-10 ${bg}`} />
       <div className="flex items-start justify-between mb-3">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${bg}`}>
           <Icon size={20} className="text-white" weight="bold" />
         </div>
+        {to && <ArrowRight size={13} className="text-slate-300 dark:text-slate-600 mt-0.5" />}
       </div>
       <p className={`text-3xl font-extrabold ${text}`}>{value.toLocaleString('pt-BR')}</p>
       <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mt-0.5">{label}</p>
       {sub && <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{sub}</p>}
-    </div>
+    </>
   );
+
+  if (to) {
+    return <Link to={to} className={`block ${baseCls}${clickCls}`}>{inner}</Link>;
+  }
+  return <div className={baseCls}>{inner}</div>;
 }
 
 // ─── AlertBanner ──────────────────────────────────────────────────────────────
@@ -102,7 +114,7 @@ function UpcomingRow({ item, idx }: { item: any; idx: number }) {
   return (
     <Link
       to={`/empresas/${item.company_id}`}
-      className="group flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
+      className="group flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
     >
       <div className={`w-1.5 h-10 rounded-full flex-shrink-0 ${STATUS_COLORS[status]}`} />
       <div className="flex-1 min-w-0">
@@ -130,80 +142,41 @@ function UpcomingRow({ item, idx }: { item: any; idx: number }) {
 export default function Dashboard() {
   const qc = useQueryClient();
   const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data, isLoading } = useQuery({ queryKey: ['dashboard'], queryFn: dashboard.get });
 
+  // Sincroniza empresas do Aditiva E tenta importar localização do XLSX (silencioso se não encontrar)
   const syncMutation = useMutation({
-    mutationFn: sync.fromAditiva,
+    mutationFn: async () => {
+      const result = await sync.fromAditiva();
+      try { await sync.importLocation(); } catch { /* pasta/arquivo não encontrado: ignora */ }
+      return result;
+    },
     onSuccess: (d) => {
-      toast(`Sync concluído: ${d.synced} empresas`, 'success');
+      toast(`Sincronização concluída: ${d.synced} empresa(s)`, 'success');
       qc.invalidateQueries({ queryKey: ['dashboard'] });
       qc.invalidateQueries({ queryKey: ['companies'] });
     },
-    onError: (e: any) => toast(e.response?.data?.error || 'Erro no sync', 'error'),
+    onError: (e: any) => toast(e.response?.data?.error || 'Erro na sincronização', 'error'),
   });
 
   const notifyMutation = useMutation({
     mutationFn: sync.triggerNotifications,
-    onSuccess: (d: any) => toast(`${d.emailSent} e-mail(s), ${d.trelloCreated} card(s) Trello`, 'success'),
+    onSuccess: (d: any) => {
+      const count = d.emailSent ?? 0;
+      toast(
+        count > 0 ? `${count} notificação(ões) enviada(s)` : 'Nenhuma notificação pendente',
+        'success'
+      );
+    },
     onError: (e: any) => toast(e.response?.data?.error || 'Erro ao notificar', 'error'),
   });
 
-  const locationMutation = useMutation({
-    mutationFn: sync.importLocation,
-    onSuccess: (d) => {
-      const msg = `Localização importada: ${d.updated} atualizada${d.updated !== 1 ? 's' : ''}` +
-        (d.notFound > 0 ? `, ${d.notFound} não encontrada${d.notFound !== 1 ? 's' : ''}` : '');
-      toast(msg, 'success');
-      qc.invalidateQueries({ queryKey: ['companies'] });
-    },
-    onError: (e: any) => {
-      const status = e.response?.status;
-      if (status === 404) {
-        // Auto-detect falhou → abre seletor de arquivo
-        toast('Pasta padrão não encontrada. Selecione o arquivo XLSX manualmente.', 'error');
-        fileInputRef.current?.click();
-      } else {
-        toast(e.response?.data?.error || 'Erro ao importar localização', 'error');
-      }
-    },
-  });
-
-  const locationFileMutation = useMutation({
-    mutationFn: (file: File) => sync.importLocationFile(file),
-    onSuccess: (d) => {
-      const msg = `Localização importada: ${d.updated} atualizada${d.updated !== 1 ? 's' : ''}` +
-        (d.notFound > 0 ? `, ${d.notFound} não encontrada${d.notFound !== 1 ? 's' : ''}` : '');
-      toast(msg, 'success');
-      qc.invalidateQueries({ queryKey: ['companies'] });
-    },
-    onError: (e: any) => toast(e.response?.data?.error || 'Erro ao importar arquivo', 'error'),
-  });
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) locationFileMutation.mutate(file);
-    // reset para permitir re-upload do mesmo arquivo
-    e.target.value = '';
-  }
-
-  const isLocationPending = locationMutation.isPending || locationFileMutation.isPending;
-
-  const stats  = data?.stats;
+  const stats    = data?.stats;
   const upcoming = data?.upcoming ?? [];
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-
-      {/* Hidden file input for manual XLSX upload */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".xlsx"
-        className="hidden"
-        onChange={handleFileChange}
-      />
 
       {/* ── Header ── */}
       <div className="flex items-start justify-between">
@@ -212,17 +185,6 @@ export default function Dashboard() {
           <p className="text-sm text-slate-400 dark:text-slate-500 mt-0.5 capitalize">{today()}</p>
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={() => locationMutation.mutate()}
-            disabled={isLocationPending}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:bg-slate-700 disabled:opacity-50 transition-all shadow-sm"
-            title="Importa cidade/UF do XLSX mais recente em N:\KAUAN\AditivaPronto\Exports"
-          >
-            {isLocationPending
-              ? <ArrowClockwise size={15} className="animate-spin" />
-              : <MapPin size={15} />}
-            {isLocationPending ? 'Importando…' : 'Importar Localização'}
-          </button>
           <button
             onClick={() => notifyMutation.mutate()}
             disabled={notifyMutation.isPending}
@@ -237,7 +199,7 @@ export default function Dashboard() {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-all shadow-sm"
           >
             <ArrowClockwise size={15} className={syncMutation.isPending ? 'animate-spin' : ''} />
-            {syncMutation.isPending ? 'Sincronizando…' : 'Sincronizar Aditiva'}
+            {syncMutation.isPending ? 'Sincronizando…' : 'Sincronizar Empresas'}
           </button>
         </div>
       </div>
@@ -258,10 +220,10 @@ export default function Dashboard() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <StatCard label="Total"        value={stats?.total ?? 0}       icon={Buildings}    bg="bg-slate-500"    border="border-slate-200 dark:border-slate-700" text="text-slate-900 dark:text-white" />
           <StatCard label="Ativas"       value={stats?.active ?? 0}      icon={CheckCircle}  bg="bg-blue-500"     border="border-blue-100 dark:border-blue-900"   text="text-blue-700 dark:text-blue-400" />
-          <StatCard label="Vencidas"     value={stats?.expired ?? 0}     icon={Warning}      bg="bg-red-500"      border="border-red-100 dark:border-red-900"     text="text-red-700 dark:text-red-400" sub="Requerem ação imediata" />
-          <StatCard label="Em 30 dias"  value={stats?.expiring_30 ?? 0} icon={Clock}        bg="bg-orange-500"   border="border-orange-100 dark:border-orange-900" text="text-orange-700 dark:text-orange-400" />
-          <StatCard label="Em 60 dias"  value={stats?.expiring_60 ?? 0} icon={Clock}        bg="bg-yellow-500"   border="border-yellow-100 dark:border-yellow-900" text="text-yellow-700 dark:text-yellow-400" />
-          <StatCard label="Em 90 dias"  value={stats?.expiring_90 ?? 0} icon={TrendUp}      bg="bg-sky-500"      border="border-sky-100 dark:border-sky-900"      text="text-sky-700 dark:text-sky-400" />
+          <StatCard label="Vencidas"     value={stats?.expired ?? 0}     icon={Warning}      bg="bg-red-500"      border="border-red-100 dark:border-red-900"     text="text-red-700 dark:text-red-400" sub="Requerem ação imediata" to="/empresas?licenseFilter=expired" />
+          <StatCard label="≤ 30 dias"   value={stats?.expiring_30 ?? 0} icon={Clock}        bg="bg-orange-500"   border="border-orange-100 dark:border-orange-900" text="text-orange-700 dark:text-orange-400" to="/empresas?licenseFilter=30" />
+          <StatCard label="31–60 dias"  value={stats?.expiring_60 ?? 0} icon={Clock}        bg="bg-yellow-500"   border="border-yellow-100 dark:border-yellow-900" text="text-yellow-700 dark:text-yellow-400" to="/empresas?licenseFilter=60" />
+          <StatCard label="61–90 dias"  value={stats?.expiring_90 ?? 0} icon={TrendUp}      bg="bg-sky-500"      border="border-sky-100 dark:border-sky-900"      text="text-sky-700 dark:text-sky-400" to="/empresas?licenseFilter=90" />
         </div>
       )}
 
@@ -347,20 +309,9 @@ export default function Dashboard() {
               >
                 <div className="flex items-center gap-2.5">
                   <ArrowClockwise size={16} className={`text-emerald-500 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Sincronizar empresas</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">Sincronizar Empresas</span>
                 </div>
                 <ArrowRight size={14} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
-              </button>
-              <button
-                onClick={() => locationMutation.mutate()}
-                disabled={isLocationPending}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group disabled:opacity-40"
-              >
-                <div className="flex items-center gap-2.5">
-                  <MapPin size={16} className={`text-teal-500 ${isLocationPending ? 'animate-pulse' : ''}`} />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Importar localização</span>
-                </div>
-                <ArrowRight size={14} className="text-slate-300 group-hover:text-teal-500 transition-colors" />
               </button>
               <button
                 onClick={() => notifyMutation.mutate()}
@@ -369,20 +320,9 @@ export default function Dashboard() {
               >
                 <div className="flex items-center gap-2.5">
                   <Bell size={16} className="text-purple-500" />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Disparar notificações</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">Notificar agora</span>
                 </div>
                 <ArrowRight size={14} className="text-slate-300 group-hover:text-purple-500 transition-colors" />
-              </button>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isLocationPending}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group disabled:opacity-40"
-              >
-                <div className="flex items-center gap-2.5">
-                  <UploadSimple size={16} className="text-slate-400" />
-                  <span className="text-sm text-slate-500 dark:text-slate-400">Enviar XLSX manualmente</span>
-                </div>
-                <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
               </button>
             </div>
           </div>

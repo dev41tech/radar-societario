@@ -12,6 +12,9 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   timezone: '-03:00',
+  // Garante que colunas DATE retornem como string 'YYYY-MM-DD'
+  // e não como objeto Date (que seria serializado como ISO string com timezone)
+  dateStrings: ['DATE'],
 });
 
 export default pool;

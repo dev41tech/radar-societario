@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, FloppyDisk, Columns, MagnifyingGlass, X, Plus,
-  CalendarBlank, TextT, Note,
+  CalendarBlank, TextT, Note, Bell, WarningCircle, ArrowClockwise, Printer,
 } from '@phosphor-icons/react';
 import { companies, trello } from '../services/api';
 import { CompanyLicense, LICENSE_LABELS, LicenseType, ALL_LICENSE_TYPES } from '../types';
@@ -14,6 +14,12 @@ import { useToast } from '../context/ToastContext';
 function toInputDate(s: string | null) {
   if (!s) return '';
   return s.split('T')[0];
+}
+
+function addOneYear(dateStr: string): string {
+  const d = new Date(`${dateStr}T12:00:00`);
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().split('T')[0];
 }
 
 function initLicense(companyId: string, type: LicenseType, saved?: CompanyLicense): CompanyLicense {
@@ -34,13 +40,15 @@ function initLicense(companyId: string, type: LicenseType, saved?: CompanyLicens
 
 // ─── LicenseCard ──────────────────────────────────────────────────────────────
 function LicenseCard({
-  license, company, onUpdate, onRemove, onTrello,
+  license, company, onUpdate, onRemove, onTrello, onNotify, isNotifying,
 }: {
   license: CompanyLicense;
   company: { razao_social: string; cnpj: string | null };
   onUpdate: (field: keyof CompanyLicense, val: any) => void;
   onRemove: () => void;
   onTrello: () => void;
+  onNotify: () => void;
+  isNotifying: boolean;
 }) {
   const inputCls = 'px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none';
 
@@ -103,6 +111,18 @@ function LicenseCard({
           />
         )}
 
+        {/* Renovar +1 ano */}
+        {!license.use_text && license.expiration_date && (
+          <button
+            onClick={() => onUpdate('expiration_date', addOneYear(toInputDate(license.expiration_date!)))}
+            title="Renovar por mais 1 ano"
+            className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-emerald-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+          >
+            <ArrowClockwise size={11} />
+            +1 ano
+          </button>
+        )}
+
         {/* toggle notes */}
         <button
           onClick={() => onUpdate('show_notes', !license.show_notes)}
@@ -115,6 +135,19 @@ function LicenseCard({
           <Note size={12} />
           Observações
         </button>
+
+        {/* Notificar */}
+        {license.expiration_date && !license.use_text && (
+          <button
+            onClick={onNotify}
+            disabled={isNotifying}
+            title="Enviar notificação por e-mail"
+            className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-purple-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors disabled:opacity-40"
+          >
+            <Bell size={12} />
+            {isNotifying ? 'Enviando…' : 'Notificar'}
+          </button>
+        )}
 
         {/* Trello */}
         {(license.expiration_date || license.expiration_date_text) && (
@@ -211,6 +244,7 @@ function LicenseSearch({
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function CompanyDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { toast } = useToast();
 
@@ -228,6 +262,7 @@ export default function CompanyDetail() {
 
   const [licenses, setLicenses] = useState<CompanyLicense[]>([]);
   const [dirty, setDirty] = useState(false);
+  const [notifyingType, setNotifyingType] = useState<string | null>(null);
 
   useEffect(() => {
     if (savedLicenses) {
@@ -254,6 +289,17 @@ export default function CompanyDetail() {
     onError: (e: any) => toast(e.response?.data?.error || 'Erro ao salvar', 'error'),
   });
 
+  const notifyMutation = useMutation({
+    mutationFn: (lic: CompanyLicense) =>
+      companies.notifyLicense(id!, {
+        license_type:    lic.license_type,
+        expiration_date: lic.expiration_date!,
+        days_until:      lic.days_until_expiration ?? 0,
+      }),
+    onSuccess: () => { setNotifyingType(null); toast('Notificação enviada por e-mail', 'success'); },
+    onError:   (e: any) => { setNotifyingType(null); toast(e.response?.data?.error || 'Erro ao notificar', 'error'); },
+  });
+
   const trelloMutation = useMutation({
     mutationFn: (lic: CompanyLicense) =>
       trello.createCard({
@@ -267,6 +313,14 @@ export default function CompanyDetail() {
     onSuccess: () => toast('Card criado no Trello', 'success'),
     onError:   (e: any) => toast(e.response?.data?.error || 'Erro Trello', 'error'),
   });
+
+  const riskSummary = useMemo(() => {
+    if (!savedLicenses) return null;
+    const expired  = savedLicenses.filter(l => l.status === 'expired').length;
+    const critical = savedLicenses.filter(l => l.status === 'critical').length;
+    const warning  = savedLicenses.filter(l => l.status === 'warning').length;
+    return { expired, critical, warning };
+  }, [savedLicenses]);
 
   function addLicense(type: LicenseType) {
     setLicenses(prev => [...prev, initLicense(id!, type)]);
@@ -306,9 +360,12 @@ export default function CompanyDetail() {
     <div className="p-6 max-w-4xl mx-auto">
       {/* header */}
       <div className="flex items-center gap-3 mb-6">
-        <Link to="/empresas" className="p-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        >
           <ArrowLeft size={18} className="text-slate-500" />
-        </Link>
+        </button>
         <div className="flex-1 min-w-0">
           <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate">{company.razao_social}</h1>
           <p className="text-sm text-slate-400 dark:text-slate-500 mt-0.5 flex items-center gap-2 flex-wrap">
@@ -325,6 +382,13 @@ export default function CompanyDetail() {
             </span>
           </p>
         </div>
+        <Link
+          to={`/empresas/${id}/relatorio`}
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+        >
+          <Printer size={15} />
+          Relatório
+        </Link>
         <button
           onClick={() => saveMutation.mutate()}
           disabled={!dirty || saveMutation.isPending}
@@ -334,6 +398,27 @@ export default function CompanyDetail() {
           {saveMutation.isPending ? 'Salvando…' : 'Salvar'}
         </button>
       </div>
+
+      {/* Banner de risco — calculado das licenças salvas */}
+      {riskSummary && (riskSummary.expired > 0 || riskSummary.critical > 0 || riskSummary.warning > 0) && (
+        <div className={`mb-5 px-4 py-3 rounded-xl border flex items-start gap-3 text-sm ${
+          riskSummary.expired > 0
+            ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
+            : riskSummary.critical > 0
+            ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-400'
+            : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400'
+        }`}>
+          <WarningCircle size={18} weight="fill" className="flex-shrink-0 mt-0.5" />
+          <span>
+            {riskSummary.expired > 0 && <strong>{riskSummary.expired} licença(s) vencida(s)</strong>}
+            {riskSummary.expired > 0 && riskSummary.critical > 0 && ', '}
+            {riskSummary.critical > 0 && <strong>{riskSummary.critical} no prazo crítico (≤ 30 dias)</strong>}
+            {(riskSummary.expired > 0 || riskSummary.critical > 0) && riskSummary.warning > 0 && ', '}
+            {riskSummary.warning > 0 && <strong>{riskSummary.warning} em atenção (31–60 dias)</strong>}
+            {' — verifique os licenciamentos abaixo.'}
+          </span>
+        </div>
+      )}
 
       {/* licenses section */}
       {loadingLicenses ? (
@@ -360,6 +445,8 @@ export default function CompanyDetail() {
               onUpdate={(field, val) => updateLicense(lic.license_type, field, val)}
               onRemove={() => removeLicense(lic.license_type)}
               onTrello={() => trelloMutation.mutate(lic)}
+              onNotify={() => { setNotifyingType(lic.license_type); notifyMutation.mutate(lic); }}
+              isNotifying={notifyingType === lic.license_type}
             />
           ))}
 

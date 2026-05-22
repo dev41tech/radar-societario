@@ -217,5 +217,5 @@ export async function initScheduler(): Promise<void> {
     } catch (e: any) {
       logger.error(`Erro no job: ${e.message}`);
     }
-  });
+  }, { timezone: 'America/Sao_Paulo' });
 }

@@ -111,6 +111,53 @@ export async function logTrelloCard(
   );
 }
 
+export async function getDiagnosticLicenses(maxDays: number): Promise<Array<{
+  company_id: string;
+  razao_social: string;
+  cnpj: string | null;
+  license_type: LicenseType;
+  expiration_date: string;
+  days_until: number;
+  notification_count: number;
+  notification_days_before: number | null;
+  notification_sent_at: string | null;
+  trello_count: number;
+}>> {
+  // Inclui licenças em até maxDays dias futuros E vencidas há até 365 dias
+  // Correlated subqueries para evitar duplicatas por múltiplas entradas no log
+  const [rows] = await pool.query(
+    `SELECT
+       l.company_id, c.razao_social, c.cnpj, l.license_type,
+       DATE_FORMAT(l.expiration_date, '%Y-%m-%d') AS expiration_date,
+       DATEDIFF(l.expiration_date, CURDATE()) AS days_until,
+       (SELECT COUNT(*) FROM rs_notification_log nl
+        WHERE nl.company_id = l.company_id
+          AND nl.license_type = l.license_type
+          AND nl.expiration_date = l.expiration_date) AS notification_count,
+       (SELECT nl.days_before FROM rs_notification_log nl
+        WHERE nl.company_id = l.company_id
+          AND nl.license_type = l.license_type
+          AND nl.expiration_date = l.expiration_date
+        ORDER BY nl.sent_at DESC LIMIT 1) AS notification_days_before,
+       (SELECT DATE_FORMAT(nl.sent_at, '%Y-%m-%d %H:%i') FROM rs_notification_log nl
+        WHERE nl.company_id = l.company_id
+          AND nl.license_type = l.license_type
+          AND nl.expiration_date = l.expiration_date
+        ORDER BY nl.sent_at DESC LIMIT 1) AS notification_sent_at,
+       (SELECT COUNT(*) FROM rs_trello_cards tc
+        WHERE tc.company_id = l.company_id
+          AND tc.license_type = l.license_type
+          AND tc.expiration_date = l.expiration_date) AS trello_count
+     FROM rs_company_licenses l
+     JOIN rs_companies c ON c.id = l.company_id
+     WHERE c.active = TRUE AND l.applicable = TRUE AND l.expiration_date IS NOT NULL
+       AND DATEDIFF(l.expiration_date, CURDATE()) BETWEEN -365 AND ?
+     ORDER BY l.expiration_date ASC`,
+    [maxDays]
+  ) as any;
+  return rows;
+}
+
 export async function getUpcomingExpirations(limit = 10): Promise<Array<{
   company_id: string;
   razao_social: string;

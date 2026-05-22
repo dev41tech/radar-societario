@@ -5,7 +5,11 @@
       "Bash(ls \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\\" 2>/dev/null)",
       "mcp__obsidian__obsidian_search_notes",
       "PowerShell($mysql = \"C:\\\\Program Files\\\\MySQL\\\\MySQL Server 8.0\\\\bin\\\\mysql.exe\"; $sql = Get-Content \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\radar-societario\\\\scripts\\\\migration_001.sql\" -Raw; $sql | & $mysql -h vps.41tech.cloud -P 3309 -u root \"-p437dd02637569c6b9d70\" aditiva_pronto 2>&1)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(del \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\radar-societario\\\\scripts\\\\migration_002.sql\")",
+      "Bash(del \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\radar-societario\\\\src\\\\backend\\\\src\\\\repositories\\\\auditRepository.ts\")",
+      "Bash(del \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\radar-societario\\\\src\\\\backend\\\\src\\\\controllers\\\\auditController.ts\")",
+      "Bash(del \"C:\\\\Users\\\\kauan.brasileiro\\\\Documents\\\\1. Apps\\\\radar-societario\\\\src\\\\frontend\\\\src\\\\pages\\\\Audit.tsx\")"
     ]
   }
 }

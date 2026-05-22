@@ -2,32 +2,63 @@ import pool from '../db/connection';
 import { Company } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
+// Ranges SQL para filtro por vencimento de licença (consistentes com getDashboardStats)
+const LICENSE_FILTER_SQL: Record<string, string> = {
+  expired: 'DATEDIFF(l.expiration_date, CURDATE()) < 0',
+  '30':    'DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 0 AND 30',
+  '60':    'DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 31 AND 60',
+  '90':    'DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 61 AND 90',
+};
+
 export async function listCompanies(params: {
   page: number;
   limit: number;
   search: string;
   status: 'all' | 'active' | 'inactive';
+  licenseFilter?: 'expired' | '30' | '60' | '90';
 }): Promise<{ data: Company[]; total: number }> {
-  const { page, limit, search, status } = params;
+  const { page, limit, search, status, licenseFilter } = params;
   const offset = (page - 1) * limit;
+
+  const hasLicenseFilter = !!licenseFilter && licenseFilter in LICENSE_FILTER_SQL;
+  // Quando há filtro de licença, usamos alias 'c' para rs_companies
+  const p = hasLicenseFilter ? 'c.' : '';
+
   const conditions: string[] = [];
   const values: any[] = [];
 
   if (search) {
-    conditions.push('(razao_social LIKE ? OR cnpj LIKE ? OR cidade LIKE ?)');
+    conditions.push(`(${p}razao_social LIKE ? OR ${p}cnpj LIKE ? OR ${p}cidade LIKE ?)`);
     values.push(`%${search}%`, `%${search}%`, `%${search}%`);
   }
-  if (status === 'active')   conditions.push('active = TRUE');
-  if (status === 'inactive') conditions.push('active = FALSE');
+  if (status === 'active')   conditions.push(`${p}active = TRUE`);
+  if (status === 'inactive') conditions.push(`${p}active = FALSE`);
+
+  if (hasLicenseFilter) {
+    conditions.push('l.applicable = TRUE');
+    conditions.push('l.expiration_date IS NOT NULL');
+    conditions.push(LICENSE_FILTER_SQL[licenseFilter!]);
+  }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
-  const [countRows] = await pool.query(`SELECT COUNT(*) as total FROM rs_companies ${where}`, values) as any;
+
+  let countSql: string;
+  let dataSql: string;
+
+  if (hasLicenseFilter) {
+    const join = 'JOIN rs_company_licenses l ON l.company_id = c.id';
+    // DISTINCT evita duplicar empresas com múltiplas licenças no mesmo range
+    countSql = `SELECT COUNT(DISTINCT c.id) as total FROM rs_companies c ${join} ${where}`;
+    dataSql  = `SELECT DISTINCT c.* FROM rs_companies c ${join} ${where} ORDER BY c.razao_social ASC LIMIT ? OFFSET ?`;
+  } else {
+    countSql = `SELECT COUNT(*) as total FROM rs_companies ${where}`;
+    dataSql  = `SELECT * FROM rs_companies ${where} ORDER BY razao_social ASC LIMIT ? OFFSET ?`;
+  }
+
+  const [countRows] = await pool.query(countSql, values) as any;
   const total = countRows[0].total;
 
-  const [rows] = await pool.query(
-    `SELECT * FROM rs_companies ${where} ORDER BY razao_social ASC LIMIT ? OFFSET ?`,
-    [...values, limit, offset]
-  ) as any;
+  const [rows] = await pool.query(dataSql, [...values, limit, offset]) as any;
 
   return { data: rows, total };
 }
@@ -68,6 +99,15 @@ export async function updateCompany(id: string, data: {
 
 export async function updateCompanyStatus(id: string, active: boolean): Promise<void> {
   await pool.query('UPDATE rs_companies SET active = ? WHERE id = ?', [active, id]);
+}
+
+export async function bulkUpdateCompanyStatus(ids: string[], active: boolean): Promise<void> {
+  if (!ids.length) return;
+  const placeholders = ids.map(() => '?').join(', ');
+  await pool.query(
+    `UPDATE rs_companies SET active = ? WHERE id IN (${placeholders})`,
+    [active, ...ids]
+  );
 }
 
 export async function upsertCompanyFromAditiva(data: {
@@ -111,20 +151,17 @@ export async function getDashboardStats(): Promise<{
   const [total]  = await pool.query('SELECT COUNT(*) as n FROM rs_companies') as any;
   const [active] = await pool.query('SELECT COUNT(*) as n FROM rs_companies WHERE active = TRUE') as any;
 
-  const d30 = new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0];
-  const d60 = new Date(Date.now() + 60 * 86400000).toISOString().split('T')[0];
-  const d90 = new Date(Date.now() + 90 * 86400000).toISOString().split('T')[0];
-  const today = new Date().toISOString().split('T')[0];
-
+  // Usa DATEDIFF no MySQL para evitar divergência de timezone com JS (toISOString → UTC).
+  // Ranges EXCLUSIVOS: uma licença em 15 dias conta APENAS em expiring_30, não em 60 ou 90.
   const baseFilter = `
     FROM rs_company_licenses l
     JOIN rs_companies c ON c.id = l.company_id
     WHERE c.active = TRUE AND l.applicable = TRUE AND l.expiration_date IS NOT NULL`;
 
-  const [e30]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND l.expiration_date BETWEEN ? AND ?`, [today, d30]) as any;
-  const [e60]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND l.expiration_date BETWEEN ? AND ?`, [today, d60]) as any;
-  const [e90]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND l.expiration_date BETWEEN ? AND ?`, [today, d90]) as any;
-  const [expired] = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND l.expiration_date < ?`, [today]) as any;
+  const [e30]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 0  AND 30`) as any;
+  const [e60]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 31 AND 60`) as any;
+  const [e90]     = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 61 AND 90`) as any;
+  const [expired] = await pool.query(`SELECT COUNT(DISTINCT l.company_id) as n ${baseFilter} AND DATEDIFF(l.expiration_date, CURDATE()) < 0`) as any;
 
   return {
     total:       total[0].n,

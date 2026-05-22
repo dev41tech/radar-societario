@@ -8,7 +8,7 @@ export const dashboard = {
 };
 
 export const companies = {
-  list: (params: { page?: number; limit?: number; search?: string; status?: string }) =>
+  list: (params: { page?: number; limit?: number; search?: string; status?: string; licenseFilter?: string }) =>
     api.get<{ data: Company[]; total: number }>('/companies', { params }).then(r => r.data),
   get: (id: string) => api.get<Company>(`/companies/${id}`).then(r => r.data),
   create: (data: { razao_social: string; cnpj?: string; cidade?: string; uf?: string }) =>
@@ -20,6 +20,10 @@ export const companies = {
   getLicenses: (id: string) => api.get<CompanyLicense[]>(`/companies/${id}/licenses`).then(r => r.data),
   saveLicenses: (id: string, licenses: Partial<CompanyLicense>[]) =>
     api.put<CompanyLicense[]>(`/companies/${id}/licenses`, { licenses }).then(r => r.data),
+  notifyLicense: (id: string, data: { license_type: string; expiration_date: string; days_until: number }) =>
+    api.post(`/companies/${id}/licenses/notify`, data).then(r => r.data),
+  bulkStatus: (ids: string[], active: boolean) =>
+    api.post('/companies/bulk-status', { ids, active }).then(r => r.data),
 };
 
 export const settings = {
@@ -55,6 +59,16 @@ export const sync = {
     );
   },
 };
+
+export const notifications = {
+  diagnostic: () => api.get('/notifications/diagnostic').then(r => r.data),
+};
+
+export const exportApi = {
+  /** Abre download direto do XLSX no browser */
+  companiesUrl: '/api/export/companies',
+};
+
 
 export const trello = {
   createCard: (data: {

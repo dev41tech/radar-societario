@@ -190,3 +190,151 @@
 [2026-05-22 08:51:08] INFO: E-mail de notificação enviado para ia@41contabil.com.br — 1 item(s)
 [2026-05-22 08:51:08] INFO: [NOTIFICATION] SEND_EMAIL_SUCCESS
 [2026-05-22 08:51:08] INFO: [NOTIFICATION] Job concluído: 1 e-mails, 0 cards Trello, 0 erros
+[2026-05-22 11:53:15] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 11:53:15] INFO: Agendador de notificações iniciado
+[2026-05-22 11:53:15] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 11:53:38] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 11:53:38] INFO: Agendador de notificações iniciado
+[2026-05-22 11:53:39] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 11:55:29] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 11:55:29] INFO: Agendador de notificações iniciado
+[2026-05-22 11:55:29] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 11:56:32] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 11:56:32] INFO: Agendador de notificações iniciado
+[2026-05-22 11:56:33] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 11:56:49] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 11:57:30] INFO: Sync concluído: 428 empresas sincronizadas
+[2026-05-22 11:57:30] INFO: [location-import] colunas — CNPJ:38 Município:20 UF:22
+[2026-05-22 11:57:35] INFO: [location-import] Relacao_Empresas_21052026.xlsx — atualizado:427 nãoEncontrado:6 pulado:1
+[2026-05-22 12:05:18] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 12:05:18] INFO: Agendador de notificações iniciado
+[2026-05-22 12:05:18] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 12:09:12] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 12:09:12] INFO: Agendador de notificações iniciado
+[2026-05-22 12:09:12] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:15:50] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:15:50] INFO: Agendador de notificações iniciado
+[2026-05-22 13:15:50] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:21:51] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:21:51] INFO: Agendador de notificações iniciado
+[2026-05-22 13:21:51] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:22:13] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:22:13] INFO: Agendador de notificações iniciado
+[2026-05-22 13:22:13] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:22:17] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:22:17] INFO: Agendador de notificações iniciado
+[2026-05-22 13:22:17] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:29:39] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:29:39] INFO: Agendador de notificações iniciado
+[2026-05-22 13:29:39] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:29:41] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:29:41] INFO: Agendador de notificações iniciado
+[2026-05-22 13:29:42] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:29:46] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:29:46] INFO: Agendador de notificações iniciado
+[2026-05-22 13:29:46] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:29:50] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:29:50] INFO: Agendador de notificações iniciado
+[2026-05-22 13:29:50] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:29:58] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:29:58] INFO: Agendador de notificações iniciado
+[2026-05-22 13:29:58] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:06] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:06] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:06] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:13] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:13] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:13] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:18] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:18] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:18] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:21] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:21] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:21] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:28] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:28] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:28] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:30] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:30] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:30] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:30:31] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:30:31] INFO: Agendador de notificações iniciado
+[2026-05-22 13:30:31] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:37:26] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:37:26] INFO: Agendador de notificações iniciado
+[2026-05-22 13:37:26] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:40:20] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 13:40:20] INFO: Agendador de notificações iniciado
+[2026-05-22 13:40:20] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:48:16] INFO: SMTP_CONFIG_DEBUG
+[2026-05-22 13:48:20] INFO: E-mail de notificação enviado para ia@41contabil.com.br — 1 item(s)
+[2026-05-22 13:52:26] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 13:52:33] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:00:00] INFO: Iniciando job de notificações agendado...
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] SETTINGS_LOADED_FOR_NOTIFICATION
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] NOTIFICATION_DAYS_PARSED
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] FLAGS
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] EXPIRING_LICENSES_FOUND
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:00:00] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:00:01] INFO: Trello card criado: [Radar] 041 CONTABILIDADE LTDA — Meio Ambiente — ID 6a108b917bcacb1e5be3ae47
+[2026-05-22 14:00:01] INFO: [NOTIFICATION] EMAIL_ITEMS_READY
+[2026-05-22 14:00:01] INFO: [NOTIFICATION] SEND_EMAIL_START
+[2026-05-22 14:00:01] INFO: SMTP_CONFIG_DEBUG
+[2026-05-22 14:00:04] INFO: E-mail de notificação enviado para ia@41contabil.com.br, societario4@41contabil.com.br — 1 item(s)
+[2026-05-22 14:00:04] INFO: [NOTIFICATION] SEND_EMAIL_SUCCESS
+[2026-05-22 14:00:04] INFO: [NOTIFICATION] Job concluído: 1 e-mails, 1 cards Trello, 0 erros
+[2026-05-22 14:02:56] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:02:56] INFO: Agendador de notificações iniciado
+[2026-05-22 14:02:56] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:03:12] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:03:13] INFO: Agendador de notificações iniciado
+[2026-05-22 14:03:13] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:03:21] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:03:21] INFO: Agendador de notificações iniciado
+[2026-05-22 14:03:21] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:03:25] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:03:25] INFO: Agendador de notificações iniciado
+[2026-05-22 14:03:25] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:03:29] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:03:29] INFO: Agendador de notificações iniciado
+[2026-05-22 14:03:29] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:07:38] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:07:38] INFO: Agendador de notificações iniciado
+[2026-05-22 14:07:38] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:22:29] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] SETTINGS_LOADED_FOR_NOTIFICATION
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] NOTIFICATION_DAYS_PARSED
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] FLAGS
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] EXPIRING_LICENSES_FOUND
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:39] INFO: Trello card criado: [Radar] 041 CONTABILIDADE LTDA — IBAMA — ID 6a1090dfb66fb0d056605c46
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:39] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:40] INFO: Trello card criado: [Radar] 041 CONTABILIDADE LTDA — Vigilância Sanitária — ID 6a1090e09b000efd5d4327b1
+[2026-05-22 14:22:40] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:40] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:40] INFO: Trello card criado: [Radar] 041 CONTABILIDADE LTDA — Corpo de Bombeiros — ID 6a1090e01d0c61ae56c06129
+[2026-05-22 14:22:40] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:40] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:41] INFO: Trello card criado: [Radar] 041 CONTABILIDADE LTDA — Taxa de Alvará Anual — ID 6a1090e1d3feaa39561f45da
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:41] INFO: Trello card criado: [Radar] 30.820.664 CARLA DA SILVA DIAS — Vigilância Sanitária — ID 6a1090e13f1739cfb4bb782c
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:41] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:42] INFO: Trello card criado: [Radar] 30.820.664 CARLA DA SILVA DIAS — Outros — ID 6a1090e2dc0c254376a15847
+[2026-05-22 14:22:42] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 14:22:42] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 14:22:42] INFO: Trello card criado: [Radar] 30.820.664 CARLA DA SILVA DIAS — Alvará de Funcionamento — ID 6a1090e2ed8272e375ed1821
+[2026-05-22 14:22:42] INFO: [NOTIFICATION] EMAIL_ITEMS_READY
+[2026-05-22 14:22:42] INFO: [NOTIFICATION] SEND_EMAIL_START
+[2026-05-22 14:22:42] INFO: SMTP_CONFIG_DEBUG
+[2026-05-22 14:22:45] INFO: E-mail de notificação enviado para ia@41contabil.com.br — 7 item(s)
+[2026-05-22 14:22:45] INFO: [NOTIFICATION] SEND_EMAIL_SUCCESS
+[2026-05-22 14:22:45] INFO: [NOTIFICATION] Job concluído: 7 e-mails, 7 cards Trello, 0 erros
