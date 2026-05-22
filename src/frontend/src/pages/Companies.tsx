@@ -179,18 +179,6 @@ export default function Companies() {
     queryFn: () => companies.list({ page, limit, search, status, licenseFilter }),
   });
 
-  const inactivateMutation = useMutation({
-    mutationFn: (id: string) => companies.inactivate(id),
-    onSuccess: () => { toast('Empresa inativada', 'success'); qc.invalidateQueries({ queryKey: ['companies'] }); },
-    onError: (e: any) => toast(e.response?.data?.error || 'Erro', 'error'),
-  });
-
-  const activateMutation = useMutation({
-    mutationFn: (id: string) => companies.activate(id),
-    onSuccess: () => { toast('Empresa reativada', 'success'); qc.invalidateQueries({ queryKey: ['companies'] }); },
-    onError: (e: any) => toast(e.response?.data?.error || 'Erro', 'error'),
-  });
-
   const bulkMutation = useMutation({
     mutationFn: ({ active }: { active: boolean }) =>
       companies.bulkStatus([...selectedIds], active),
@@ -406,34 +394,13 @@ export default function Companies() {
                       {c.active ? 'Ativa' : 'Inativa'}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      {c.active ? (
-                        <button
-                          onClick={() => inactivateMutation.mutate(c.id)}
-                          disabled={inactivateMutation.isPending}
-                          title="Inativar empresa"
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                        >
-                          <XCircle size={17} />
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => activateMutation.mutate(c.id)}
-                          disabled={activateMutation.isPending}
-                          title="Reativar empresa"
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors"
-                        >
-                          <CheckCircle size={17} />
-                        </button>
-                      )}
-                      <Link
-                        to={`/empresas/${c.id}`}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-                      >
-                        <ArrowRight size={17} />
-                      </Link>
-                    </div>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      to={`/empresas/${c.id}`}
+                      className="inline-flex p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                    >
+                      <ArrowRight size={17} />
+                    </Link>
                   </td>
                 </tr>
               ))}

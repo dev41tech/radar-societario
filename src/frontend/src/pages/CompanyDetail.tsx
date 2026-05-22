@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, FloppyDisk, Columns, MagnifyingGlass, X, Plus,
   CalendarBlank, TextT, Note, Bell, WarningCircle, ArrowClockwise, Printer,
+  XCircle, CheckCircle,
 } from '@phosphor-icons/react';
 import { companies, trello } from '../services/api';
 import { CompanyLicense, LICENSE_LABELS, LicenseType, ALL_LICENSE_TYPES } from '../types';
@@ -314,6 +315,17 @@ export default function CompanyDetail() {
     onError:   (e: any) => toast(e.response?.data?.error || 'Erro Trello', 'error'),
   });
 
+  const toggleStatusMutation = useMutation({
+    mutationFn: () =>
+      company!.active ? companies.inactivate(id!) : companies.activate(id!),
+    onSuccess: () => {
+      toast(company!.active ? 'Empresa inativada' : 'Empresa reativada', 'success');
+      qc.invalidateQueries({ queryKey: ['company', id] });
+      qc.invalidateQueries({ queryKey: ['companies'] });
+    },
+    onError: (e: any) => toast(e.response?.data?.error || 'Erro', 'error'),
+  });
+
   const riskSummary = useMemo(() => {
     if (!savedLicenses) return null;
     const expired  = savedLicenses.filter(l => l.status === 'expired').length;
@@ -382,6 +394,18 @@ export default function CompanyDetail() {
             </span>
           </p>
         </div>
+        <button
+          onClick={() => toggleStatusMutation.mutate()}
+          disabled={toggleStatusMutation.isPending}
+          className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl border transition-colors disabled:opacity-50 ${
+            company.active
+              ? 'border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+              : 'border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
+          }`}
+        >
+          {company.active ? <XCircle size={15} /> : <CheckCircle size={15} />}
+          {toggleStatusMutation.isPending ? '…' : company.active ? 'Inativar' : 'Ativar'}
+        </button>
         <Link
           to={`/empresas/${id}/relatorio`}
           className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
