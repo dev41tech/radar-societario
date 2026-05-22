@@ -68,3 +68,125 @@
 [2026-05-21 14:58:19] INFO: [location-import] colunas — CNPJ:38 Município:20 UF:22
 [2026-05-21 14:58:25] INFO: [location-import] Relacao_Empresas_21052026.xlsx — atualizado:427 nãoEncontrado:6 pulado:1
 [2026-05-21 14:58:38] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 16:52:59] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 16:52:59] INFO: Agendador de notificações iniciado
+[2026-05-21 16:53:00] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 16:53:53] INFO: SMTP_CONFIG_DEBUG
+[2026-05-21 16:54:01] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 16:55:43] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 16:57:13] INFO: SMTP_CONFIG_DEBUG
+[2026-05-21 16:58:37] INFO: Agendador configurado: 0 8 * * *
+[2026-05-21 16:58:39] INFO: SMTP_CONFIG_DEBUG
+[2026-05-21 16:58:39] INFO: Job concluído: 0 e-mails, 0 cards Trello, 1 erros
+[2026-05-21 16:59:08] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:00:00] INFO: Iniciando job de notificações agendado...
+[2026-05-21 17:00:00] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:08:58] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:08:58] INFO: Agendador de notificações iniciado
+[2026-05-21 17:08:58] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:09:00] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:09:00] INFO: Agendador de notificações iniciado
+[2026-05-21 17:09:00] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:09:05] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:09:05] INFO: Agendador de notificações iniciado
+[2026-05-21 17:09:05] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:09:07] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:09:07] INFO: Agendador de notificações iniciado
+[2026-05-21 17:09:07] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:10:31] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:10:31] INFO: Agendador de notificações iniciado
+[2026-05-21 17:10:31] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:13:50] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:13:50] INFO: Agendador de notificações iniciado
+[2026-05-21 17:13:50] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:13:52] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:13:52] INFO: Agendador de notificações iniciado
+[2026-05-21 17:13:52] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:13:57] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:13:57] INFO: Agendador de notificações iniciado
+[2026-05-21 17:13:57] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:00] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:00] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:00] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:03] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:03] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:03] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:11] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:11] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:11] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:18] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:18] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:18] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:27] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:27] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:27] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:37] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:37] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:37] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:44] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:44] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:44] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:46] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:46] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:46] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:49] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:49] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:49] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:52] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:52] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:52] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:54] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:54] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:54] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:55] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:55] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:55] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:57] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:57] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:57] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:14:58] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:14:58] INFO: Agendador de notificações iniciado
+[2026-05-21 17:14:58] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:16:52] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:16:52] INFO: SMTP_CONFIG_DEBUG
+[2026-05-21 17:16:52] INFO: Job concluído: 0 e-mails, 0 cards Trello, 1 erros
+[2026-05-21 17:16:56] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:16:56] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:00] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:00] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:04] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:04] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:49] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:49] INFO: SMTP_CONFIG_DEBUG
+[2026-05-21 17:17:49] INFO: Job concluído: 0 e-mails, 0 cards Trello, 1 erros
+[2026-05-21 17:17:53] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:53] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:54] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:54] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:55] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:55] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:17:56] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:17:56] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:18:37] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:18:37] INFO: Agendador de notificações iniciado
+[2026-05-21 17:18:37] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:19:09] INFO: Licenciamentos encontrados para análise
+[2026-05-21 17:19:09] INFO: Job concluído: 0 e-mails, 0 cards Trello, 0 erros
+[2026-05-21 17:27:29] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:27:29] INFO: Agendador de notificações iniciado
+[2026-05-21 17:27:29] INFO: Agendador configurado: 0 17 * * *
+[2026-05-21 17:28:05] INFO: Radar Societário rodando na porta 3002
+[2026-05-21 17:28:05] INFO: Agendador de notificações iniciado
+[2026-05-21 17:28:05] INFO: Agendador configurado: 0 17 * * *
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] SETTINGS_LOADED_FOR_NOTIFICATION
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] NOTIFICATION_DAYS_PARSED
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] FLAGS
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] EXPIRING_LICENSES_FOUND
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] LICENSE_ANALYSIS
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] NOTIFICATION_ALREADY_SENT_CHECK
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] EMAIL_ITEMS_READY
+[2026-05-22 08:51:05] INFO: [NOTIFICATION] SEND_EMAIL_START
+[2026-05-22 08:51:05] INFO: SMTP_CONFIG_DEBUG
+[2026-05-22 08:51:08] INFO: E-mail de notificação enviado para ia@41contabil.com.br — 1 item(s)
+[2026-05-22 08:51:08] INFO: [NOTIFICATION] SEND_EMAIL_SUCCESS
+[2026-05-22 08:51:08] INFO: [NOTIFICATION] Job concluído: 1 e-mails, 0 cards Trello, 0 erros

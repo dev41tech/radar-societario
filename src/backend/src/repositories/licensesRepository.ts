@@ -54,18 +54,21 @@ export async function getExpiringLicenses(daysBefore: number): Promise<Array<{
   expiration_date: string;
   days_until: number;
 }>> {
-  const today      = new Date().toISOString().split('T')[0];
-  const targetDate = new Date(Date.now() + daysBefore * 86400000).toISOString().split('T')[0];
+  // Usa apenas aritmética do MySQL para evitar qualquer divergência de timezone
+  // entre o processo Node.js (que usa toISOString → UTC) e o MySQL (timezone -03:00).
+  // DATEDIFF retorna negativo para datas vencidas, mas incluímos >= 0 para cobrir
+  // somente licenças ainda não vencidas (ou vencendo hoje = 0 dias).
   const [rows] = await pool.query(
-    `SELECT l.company_id, c.razao_social, c.cnpj, l.license_type, l.expiration_date,
-            DATEDIFF(l.expiration_date, CURDATE()) as days_until
+    `SELECT l.company_id, c.razao_social, c.cnpj, l.license_type,
+            DATE_FORMAT(l.expiration_date, '%Y-%m-%d') AS expiration_date,
+            DATEDIFF(l.expiration_date, CURDATE()) AS days_until
      FROM rs_company_licenses l
      JOIN rs_companies c ON c.id = l.company_id
      WHERE c.active = TRUE AND l.applicable = TRUE
        AND l.expiration_date IS NOT NULL
-       AND l.expiration_date BETWEEN ? AND ?
+       AND DATEDIFF(l.expiration_date, CURDATE()) BETWEEN 0 AND ?
      ORDER BY l.expiration_date ASC`,
-    [today, targetDate]
+    [daysBefore]
   ) as any;
   return rows;
 }
