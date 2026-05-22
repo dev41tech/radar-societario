@@ -55,6 +55,7 @@ export async function getNotificationDiagnostic(req: Request, res: Response): Pr
         razao_social:            row.razao_social,
         cnpj:                    row.cnpj,
         license_type:            row.license_type,
+        license_label:           row.license_label ?? null,
         expiration_date:         row.expiration_date,
         days_until:              daysUntil,
         matched_threshold:       matchedThreshold,

@@ -43,6 +43,7 @@ export interface CompanyLicense {
   id: number;
   company_id: string;
   license_type: LicenseType;
+  license_label: string | null;
   expiration_date: string | null;
   expiration_date_text: string | null;
   notes: string | null;
@@ -67,6 +68,7 @@ export interface UpcomingExpiration {
   company_id: string;
   razao_social: string;
   license_type: LicenseType;
+  license_label: string | null;
   expiration_date: string;
   days_until: number;
 }

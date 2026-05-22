@@ -145,7 +145,9 @@ export default function CompanyReport() {
             {sortedLicenses.map(lic => (
               <tr key={lic.license_type}>
                 <td className="px-3 py-2.5 font-medium text-slate-900">
-                  {LICENSE_LABELS[lic.license_type]}
+                  {lic.license_type === 'outros' && lic.license_label
+                    ? `Outros — ${lic.license_label}`
+                    : LICENSE_LABELS[lic.license_type]}
                 </td>
                 <td className="px-3 py-2.5 text-slate-600">
                   {lic.expiration_date_text ?? formatDate(lic.expiration_date)}

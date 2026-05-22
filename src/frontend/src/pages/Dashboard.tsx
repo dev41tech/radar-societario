@@ -122,7 +122,9 @@ function UpcomingRow({ item, idx }: { item: any; idx: number }) {
           {item.razao_social}
         </p>
         <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-          {LICENSE_LABELS[item.license_type as LicenseType]}
+          {item.license_type === 'outros' && item.license_label
+            ? `Outros — ${item.license_label}`
+            : LICENSE_LABELS[item.license_type as LicenseType]}
         </p>
       </div>
       <div className="text-right flex-shrink-0">

@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS rs_company_licenses (
     'antt',
     'outros'
   ) NOT NULL,
+  license_label VARCHAR(100) NULL,
   expiration_date DATE NULL,
   notes TEXT NULL,
   applicable BOOLEAN DEFAULT TRUE,

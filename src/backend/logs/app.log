@@ -338,3 +338,18 @@
 [2026-05-22 14:22:45] INFO: E-mail de notificação enviado para ia@41contabil.com.br — 7 item(s)
 [2026-05-22 14:22:45] INFO: [NOTIFICATION] SEND_EMAIL_SUCCESS
 [2026-05-22 14:22:45] INFO: [NOTIFICATION] Job concluído: 7 e-mails, 7 cards Trello, 0 erros
+[2026-05-22 14:46:59] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:46:59] INFO: Agendador de notificações iniciado
+[2026-05-22 14:46:59] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:47:09] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:47:09] INFO: Agendador de notificações iniciado
+[2026-05-22 14:47:09] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:47:19] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:47:19] INFO: Agendador de notificações iniciado
+[2026-05-22 14:47:19] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:47:28] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:47:28] INFO: Agendador de notificações iniciado
+[2026-05-22 14:47:28] INFO: Agendador configurado: 0 14 * * *
+[2026-05-22 14:49:03] INFO: Radar Societário rodando na porta 3002
+[2026-05-22 14:49:03] INFO: Agendador de notificações iniciado
+[2026-05-22 14:49:04] INFO: Agendador configurado: 0 14 * * *

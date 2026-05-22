@@ -18,6 +18,7 @@ export async function upsertAllLicenses(
   companyId: string,
   licenses: Array<{
     license_type: LicenseType;
+    license_label?: string | null;
     expiration_date: string | null;
     expiration_date_text: string | null;
     notes: string | null;
@@ -32,9 +33,9 @@ export async function upsertAllLicenses(
     for (const l of licenses) {
       await conn.query(
         `INSERT INTO rs_company_licenses
-         (company_id, license_type, expiration_date, expiration_date_text, notes, applicable)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [companyId, l.license_type, l.expiration_date || null, l.expiration_date_text || null, l.notes || null, l.applicable]
+         (company_id, license_type, license_label, expiration_date, expiration_date_text, notes, applicable)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [companyId, l.license_type, l.license_label || null, l.expiration_date || null, l.expiration_date_text || null, l.notes || null, l.applicable]
       );
     }
     await conn.commit();
@@ -116,6 +117,7 @@ export async function getDiagnosticLicenses(maxDays: number): Promise<Array<{
   razao_social: string;
   cnpj: string | null;
   license_type: LicenseType;
+  license_label: string | null;
   expiration_date: string;
   days_until: number;
   notification_count: number;
@@ -127,7 +129,7 @@ export async function getDiagnosticLicenses(maxDays: number): Promise<Array<{
   // Correlated subqueries para evitar duplicatas por múltiplas entradas no log
   const [rows] = await pool.query(
     `SELECT
-       l.company_id, c.razao_social, c.cnpj, l.license_type,
+       l.company_id, c.razao_social, c.cnpj, l.license_type, l.license_label,
        DATE_FORMAT(l.expiration_date, '%Y-%m-%d') AS expiration_date,
        DATEDIFF(l.expiration_date, CURDATE()) AS days_until,
        (SELECT COUNT(*) FROM rs_notification_log nl
@@ -162,13 +164,14 @@ export async function getUpcomingExpirations(limit = 10): Promise<Array<{
   company_id: string;
   razao_social: string;
   license_type: LicenseType;
+  license_label: string | null;
   expiration_date: string;
   days_until: number;
 }>> {
   const today = new Date().toISOString().split('T')[0];
   const [rows] = await pool.query(
-    `SELECT l.company_id, c.razao_social, l.license_type, l.expiration_date,
-            DATEDIFF(l.expiration_date, CURDATE()) as days_until
+    `SELECT l.company_id, c.razao_social, l.license_type, l.license_label,
+            l.expiration_date, DATEDIFF(l.expiration_date, CURDATE()) as days_until
      FROM rs_company_licenses l
      JOIN rs_companies c ON c.id = l.company_id
      WHERE c.active = TRUE AND l.applicable = TRUE

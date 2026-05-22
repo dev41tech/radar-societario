@@ -40,6 +40,7 @@ export interface CompanyLicense {
   id: number;
   company_id: string;
   license_type: LicenseType;
+  license_label: string | null;
   expiration_date: string | null;
   expiration_date_text: string | null;
   notes: string | null;

@@ -29,6 +29,7 @@ interface DiagnosticItem {
   razao_social: string;
   cnpj: string | null;
   license_type: string;
+  license_label: string | null;
   expiration_date: string;
   days_until: number;
   matched_threshold: number | null;
@@ -310,7 +311,9 @@ export default function Diagnostics() {
 
                       {/* Licença */}
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                        {LICENSE_LABELS[item.license_type as LicenseType] ?? item.license_type}
+                        {item.license_type === 'outros' && item.license_label
+                          ? `Outros — ${item.license_label}`
+                          : (LICENSE_LABELS[item.license_type as LicenseType] ?? item.license_type)}
                       </td>
 
                       {/* Vencimento */}

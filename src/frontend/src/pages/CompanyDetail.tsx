@@ -28,6 +28,7 @@ function initLicense(companyId: string, type: LicenseType, saved?: CompanyLicens
     id: saved?.id ?? 0,
     company_id: companyId,
     license_type: type,
+    license_label: saved?.license_label ?? null,
     expiration_date: saved?.expiration_date ?? null,
     expiration_date_text: saved?.expiration_date_text ?? null,
     notes: saved?.notes ?? null,
@@ -75,6 +76,18 @@ function LicenseCard({
           <X size={15} />
         </button>
       </div>
+
+      {/* Descrição personalizada — visível somente para "Outros" */}
+      {license.license_type === 'outros' && (
+        <input
+          type="text"
+          value={license.license_label ?? ''}
+          onChange={e => onUpdate('license_label', e.target.value || null)}
+          placeholder="Especifique o tipo de licenciamento…"
+          className={`w-full mb-3 ${inputCls}`}
+          maxLength={100}
+        />
+      )}
 
       {/* date row */}
       <div className="flex items-center gap-3 flex-wrap">
@@ -276,6 +289,7 @@ export default function CompanyDetail() {
     mutationFn: () =>
       companies.saveLicenses(id!, licenses.map(l => ({
         license_type:         l.license_type,
+        license_label:        l.license_type === 'outros' ? (l.license_label || null) : null,
         expiration_date:      l.use_text ? null : (l.expiration_date || null),
         expiration_date_text: l.use_text ? (l.expiration_date_text || null) : null,
         notes:                l.notes || null,
